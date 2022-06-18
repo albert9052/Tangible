@@ -24,8 +24,8 @@ Tb6612fng motor(STBY, INA1, INA2, PWMA);
 
 /* ------------------------------------------------------------ Firebase Variables Declaration ------------------------------------------------------------ */
 
-// Library: 
-// https://github.com/mobizt/Firebase-ESP32
+// Library:
+// https://github.com/mobizt/Firebase-ESP-Client (updated)
 
 #if defined(ESP32)
 #include <WiFi.h>
@@ -74,13 +74,13 @@ void setup() {
   threshold = 50;
   arrived = false;
 
-/* ------------------------------------------------------------ Motor Declaration ------------------------------------------------------------ */
+  /* ------------------------------------------------------------ Motor Declaration ------------------------------------------------------------ */
 
   motor.begin();
 
-/* ------------------------------------------------------------ /Motor Declaration/ ------------------------------------------------------------ */
+  /* ------------------------------------------------------------ /Motor Declaration/ ------------------------------------------------------------ */
 
-/* ------------------------------------------------------------ Firebase Setup ------------------------------------------------------------ */
+  /* ------------------------------------------------------------ Firebase Setup ------------------------------------------------------------ */
 
   Serial.begin(115200);
 
@@ -123,7 +123,7 @@ void setup() {
 
   Firebase.setDoubleDigits(5);
 
-/* ------------------------------------------------------------ /Firebase Setup/ ------------------------------------------------------------ */
+  /* ------------------------------------------------------------ /Firebase Setup/ ------------------------------------------------------------ */
 }
 
 void loop() {
@@ -147,16 +147,16 @@ void loop() {
 
     //Serial.printf("Get float... %s\n", Firebase.getFloat(fbdo, F("/test/float")) ? String(fbdo.to<float>()).c_str() : fbdo.errorReason().c_str());
   }
-  
+
   float sensorValue = analogRead(34);
-  
+
   average = average * 0.99 + sensorValue * 0.01;
 
   if (arrived) {
     if (target - sensorValue > threshold * 1.5) {
-       arrived = false;
+      arrived = false;
     } else if (sensorValue - target > threshold * 1.5) {
-       arrived = false;
+      arrived = false;
     }
   } else {
     if (target - sensorValue > threshold) {
